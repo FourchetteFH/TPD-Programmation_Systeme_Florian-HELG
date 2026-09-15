@@ -39,4 +39,40 @@ public class Image {
         }
         writer.close();
     }
+
+
+// file.reader lis les caractères
+// Stream tokenizer découpe le flux en token
+// next token avance d'un token
+    static public read_txt(String filename) throws IOException {
+        try (BufferedReader fr = new FileReader(filename.txt)) {
+            StreamTokenizer st = new StreamTokenizer(fr);  
+
+            String magic = st.sval;
+            if(!"P3".equals(magic)){
+                throw new IOException("Format pas bon on vuet du P3");
+            }
+
+            st.nextToken();
+            int width = (int) st.nval;
+            st.nextToken();
+            int height = (int) st.nval;
+            st.nextToken();
+            int maxVal = (int) st.nval;
+
+            Image img = new Image(width,height);
+            for (int y=0; y < height ; y++) {
+                for(int x=0; x < width ; x++){
+                    st.nextToken();
+                    int r = (int) st.nval;
+                    st.nextToken();
+                    int g = (int) st.nval;
+                    st.nextToken();
+                    int b = (int) st.nval;
+                    img.setPixel(x,y,r,g,b);
+                }
+            }
+            return img;
+        }
+    }
 }
