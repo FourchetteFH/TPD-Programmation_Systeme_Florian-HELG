@@ -1,11 +1,11 @@
 public class TestRunner {
+
     public static void main(String[] args) {
         testStep2();
         testStep3();
-//        testStep4();
-//        testStep5();
+        testStep4();
+        testStep5();
     }
-
 
     public static void testStep2() {
         System.out.println("=== TEST ÉTAPE 2 : Utils Entiers ===");
@@ -17,10 +17,10 @@ public class TestRunner {
 
         assert written == 4 : "writeInt doit retourner 4";
 
-        assert (buffer[3] & 0xFF) == 0xF0 : "Octet 0 incorrect";
-        assert (buffer[4] & 0xFF) == 0xA1 : "Octet 1 incorrect";
-        assert (buffer[5] & 0xFF) == 0xB2 : "Octet 2 incorrect";
-        assert (buffer[6] & 0xFF) == 0xE3 : "Octet 3 incorrect";
+        assert (buffer[3]  & 0xFF) == 0xF0 : "Octet 0 incorrect";
+        assert (buffer[4]  & 0xFF) == 0xA1 : "Octet 1 incorrect";
+        assert (buffer[5]  & 0xFF) == 0xB2 : "Octet 2 incorrect";
+        assert (buffer[6]  & 0xFF) == 0xE3 : "Octet 3 incorrect";
 
         assert Utils.readInt(buffer, 3) == value :
                 "Erreur writeInt / readInt";
@@ -38,6 +38,14 @@ public class TestRunner {
 
         assert Utils.readShort(buffer, 20) == shortValue :
                 "Erreur writeShort / readShort";
+
+        // test bonus : bits de poids fort à 1
+        Utils.writeInt(buffer, 10, 0x80000000);
+        assert (buffer[10] & 0xFF) == 0x80 : "0x80000000 : octet 0 incorrect";
+        assert buffer[11] == 0 && buffer[12] == 0 && buffer[13] == 0 :
+                "0x80000000 : autres octets incorrects";
+        assert Utils.readInt(buffer, 10) == 0x80000000 :
+                "Erreur sur 0x80000000";
 
         System.out.println("[OK] Étape 2 validée !");
     }
@@ -69,8 +77,7 @@ public class TestRunner {
             buffer[i] = (byte) 0x7F;
         }
 
-        int stringWritten =
-                Utils.writeString(buffer, 16, "MYFS", 16);
+        int stringWritten = Utils.writeString(buffer, 16, "MYFS", 16);
 
         assert stringWritten == 16 :
                 "writeString doit retourner maxLength";
@@ -156,23 +163,19 @@ public class TestRunner {
 
         mm.setBlockUsed(129, true);
 
-        int bitmapOffset =
-                MemoryManager.BITMAP_OFFSET + (129 / 8);
+        int bitmapOffset = MemoryManager.BITMAP_OFFSET + (129 / 8);
 
-        assert (mm.getFilesystemMemory()[bitmapOffset]
-                & 0xFF) == 0x02 :
+        assert (mm.getFilesystemMemory()[bitmapOffset] & 0xFF) == 0x02 :
                 "Le bit du bloc 129 est incorrect";
 
         mm.setBlockUsed(130, true);
 
-        assert (mm.getFilesystemMemory()[bitmapOffset]
-                & 0xFF) == 0x06 :
+        assert (mm.getFilesystemMemory()[bitmapOffset] & 0xFF) == 0x06 :
                 "Les bits 129 et 130 sont incorrects";
 
         mm.setBlockUsed(130, false);
 
-        assert (mm.getFilesystemMemory()[bitmapOffset]
-                & 0xFF) == 0x02 :
+        assert (mm.getFilesystemMemory()[bitmapOffset] & 0xFF) == 0x02 :
                 "La libération du bloc 130 est incorrecte";
 
         MemoryManager mm2 = new MemoryManager();
@@ -192,11 +195,9 @@ public class TestRunner {
         assert mm2.isBlockUsed(-1) == -1 :
                 "Un bloc négatif doit être refusé";
 
-        assert mm2.isBlockUsed(
-                MemoryManager.NUM_BLOCKS) == -1 :
+        assert mm2.isBlockUsed(MemoryManager.NUM_BLOCKS) == -1 :
                 "Un bloc hors limites doit être refusé";
 
         System.out.println("[OK] Étape 5 validée !");
     }
-
 }
