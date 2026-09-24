@@ -1,6 +1,7 @@
 public class Main {
     public static void main(String[] args) throws Exception {
 
+        //Ceci est le test que ça marche
         Image image = new Image(4, 2);
         image.setPixel(0, 0, 255, 0, 0);
         image.setPixel(1, 0, 0, 255, 0);
