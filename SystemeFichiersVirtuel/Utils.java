@@ -29,7 +29,6 @@ public class Utils {
         memory[offset]     = (byte) (value >> 8);
         memory[offset + 1] = (byte) value;
         return 2;
-        return 2;
     }
 
 
