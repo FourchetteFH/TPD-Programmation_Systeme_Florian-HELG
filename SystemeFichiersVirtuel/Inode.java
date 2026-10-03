@@ -20,8 +20,6 @@ public class Inode {
 
         //il faut sauter le début de la table et les inodes précédent
         return MemoryManager.INODE_TABLE_OFFSET + inodeNumber * INODE_SIZE;
-
-        return 0;
     }
 
     public int getFileType() {
@@ -60,7 +58,7 @@ public class Inode {
         int position = getInodeOffset() + 28;
 
         for (int i = 0; i < DIRECT_POINTERS; i++) {
-            pointeurs[i] = Utils.readInt(memory, position);
+            pointers[i] = Utils.readInt(memory, position);
             position = position + 4;
         }
 
