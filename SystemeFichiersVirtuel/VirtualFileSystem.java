@@ -43,17 +43,9 @@ public class VirtualFileSystem {
         // TODO:
         // Construire l'inode.
         // L'initialiser comme fichier vide.
-
-        //Je me suis aidé de l'IA pour cette partie.
         //
-        //De ce que j'ai compris, créer un fichier c'est pas forcément écrire son contenu, 
-        //il faut d'abord l'inode pour décrire le fichier et ses caractéristiques. 
-        //Un fichier vide existe mais sasn bloc de données. 
-        //La méthode cherche un inode libre, la boucle les regarde un par un jusqu'à ce que le premier type vale 0. 
-        //Ca marche car la mémoire neuve est remplie de 0 donc au départ tous les inodes sont libres, sinon ça échoue en renvoyant -1 et createFlie false.
-        // On remplie l'inode avec des valeurs de fichiers vide donc le type à 1, la taille a 0 pour dire que le ficheir est vide
-        // la date de creation modification, pointeurs à 0 parce que aucun bloc n'est alloué vu que le bloc 0 est le superbloc
-        //les permissions et 1 lien et writeToMemory écrit tous les champs dans la mémoire dans l'ordre du format de l'inode.
+        //un fichier vide n'a besoin que d'un inode, type 1 (fichier), taille 0, aucun bloc de données,pointeurs à 0, car 0 = aucun bloc.
+        // date creation modification identique pour un nouveau fichier 
 
         int type = 1;                                       // 1 = fichier
         int taille = 0;                                     // fichier vide
@@ -133,7 +125,7 @@ public class VirtualFileSystem {
 
         Inode inode = new Inode(memoryManager, inodeNum);
         long creation = Utils.readLong(memory, inode.getInodeOffset() + 12);
-        long modification = System.currentTimeMillis();
+        long modification = System.currentTimeMillis(); //heure actuelle en ms
 
         inode.writeToMemory(1, data.length, creation, modification, blockPointers, 0, (short)0644, 1);
 
