@@ -3,7 +3,7 @@ public class Calcule extends Thread {
     private int valeur;
     private int multiplicateur;
     private int index;
-    private int resultat;
+    private int resultat = 0;
 
     public Calcule (int valeur, int multiplicateur, int index) {
         this.valeur = valeur;
@@ -13,8 +13,6 @@ public class Calcule extends Thread {
 
     @Override
     public void run() {
-
-        int resultat = 0;
 
         for (int j = 0; j < multiplicateur; j++) {
             resultat += valeur * valeur + valeur;

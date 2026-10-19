@@ -16,13 +16,13 @@ public class CalculeParallele {
         for (int i = 0; i < threads.length; i++) {
             try {
                 threads[i].join();
-            } catch (Exception e) {
+            } catch (InterruptedException e) {
             }
             sommeTotal += threads[i].getResultat();
         }
 
-        long duree = System.nanoTime() - debut;
-        System.out.println("Durée" + duree);
-        System.out.println("Somme Totale" + sommeTotal);
+        long duree = System.nanoTime() - debut/1_000_000;
+        System.out.println("Somme Totale (en ms) : " + sommeTotal);
+        System.out.println("Durée (en ms) : " + duree);
     }
 }
