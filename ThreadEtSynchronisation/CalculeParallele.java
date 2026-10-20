@@ -21,7 +21,7 @@ public class CalculeParallele {
             sommeTotal += threads[i].getResultat();
         }
 
-        long duree = (System.nanoTime() - debut/1_000_000);
+        long duree = (System.nanoTime() - debut)/1_000_000;
         System.out.println("Somme Totale : " + sommeTotal);
         System.out.println("Durée (en ms) : " + duree);
     }
